@@ -4,9 +4,9 @@
     'name': 'Merge Purchase Order',
     'category': 'Purchases',
     'summary': 'This module will merge purchase order.',
-    'version': '14.0.1.0.0',
-    'website': 'http://www.aktivsoftware.com',
-    'author': 'Aktiv Software',
+    'version': '14.0.1.1.0',
+    'website': 'http://www.odoo.co.th',
+    'author': 'Frontware International, Aktiv Software',
     'description': 'Merge Purchase Order',
     'license': "AGPL-3",
 

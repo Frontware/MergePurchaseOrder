@@ -34,8 +34,16 @@ class MergePurchaseOrder(models.TransientModel):
                         [purchase.id for purchase in purchase_orders])]
                 }
             return res
+    def compare_price(self, p1, p2, precision=2):
+        '''
+        compare price p1 and price p2 by round with  precision
+        '''
+        return round(p1, precision) == round(p2, precision)
 
-    def merge_orders(self):
+    def merge_orders(self): 
+        ''' take precision from company '''
+        precision = self.env.user_id.company_id.currency_id.decimal_places
+       
         purchase_orders = self.env['purchase.order'].browse(
             self._context.get('active_ids', []))
         existing_po_line = False
@@ -64,7 +72,7 @@ class MergePurchaseOrder(models.TransientModel):
                     if po.order_line:
                         for poline in po.order_line:
                             if line.product_id == poline.product_id and\
-                                    line.price_unit == poline.price_unit:
+                                    self.compare_price(line.price_unit, poline.price_unit, precision):
                                 existing_po_line = poline
                                 break
                     if existing_po_line:
@@ -91,7 +99,7 @@ class MergePurchaseOrder(models.TransientModel):
                     if po.order_line:
                         for po_line in po.order_line:
                             if line.product_id == po_line.product_id and \
-                                    line.price_unit == po_line.price_unit:
+                                    self.compare_price(line.price_unit, po_line.price_unit, precision):
                                 existing_po_line = po_line
                                 break
                     if existing_po_line:
@@ -118,7 +126,7 @@ class MergePurchaseOrder(models.TransientModel):
                     if po.order_line:
                         for po_line in po.order_line:
                             if line.product_id == po_line.product_id and \
-                                    line.price_unit == po_line.price_unit:
+                                    self.compare_price(line.price_unit, po_line.price_unit, precision):
                                 existing_po_line = po_line
                                 break
                     if existing_po_line:
@@ -145,7 +153,7 @@ class MergePurchaseOrder(models.TransientModel):
                     if po.order_line:
                         for po_line in po.order_line:
                             if line.product_id == po_line.product_id and \
-                                    line.price_unit == po_line.price_unit:
+                                    self.compare_price(line.price_unit, po_line.price_unit, precision):
                                 existing_po_line = po_line
                                 break
                     if existing_po_line:
